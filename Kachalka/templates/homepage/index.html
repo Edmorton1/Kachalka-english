@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row" style="margin: 4vw; margin-bottom: 2.8vw; margin-top: 3vw;">
+    <div style="height: 37vh; width: 50vw; margin-bottom: 0vh">
+        {% include "tables/records_table.html" %}
+    </div>
+    <div style="width: 41vw; height: 42vh;">
+        {% include "tables/user_table.html" %}
+    </div>
+    <div style="height: 37vh; width: 50vw;">
+        {% include "tables/static_table.html" %}
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,72 @@
+winpty sqlite3 - подключение
+sqlite3
+CREATE TABLE ___ (___);
+INSERT INTO ___ VALUES(___);
+SELECT * FROM ___; - вывести всё
+.exit
+
+НА PYTHON
+import sqlite3
+con = sqlite3.connect(___)
+cur = con.cursor(___) - через это всё взаимодействие
+cur.execute(___) - Делает запросы к БД
+cur.executescript(___) - для нескольких таблиц
+cur.executemany(___) - для нескольких данных в таблице
+BETWEEN начало_диапазона AND конец_диапазона
+IN
+AND OR NOT
+DISTINCT - убирает повторы
+.mode table - делает таблицу
+SELECT tbl_name FROM sqlite_master WHERE type='table'; - получить таблицы в бд
+ORDER BY - сортировка
+ASC - возрастание
+DESC - убывание
+LIMIT <сколько строк нужно показать> OFFSET(начинается с 0) <на сколько строк сдвинуть выборку>;
+DISTINCT - список уникальных
+GROUP BY
+HAVING
+PRAGMA table_info(___); - инфа о таблице
+FOREIGN KEY(<name>) REFERENCES <table>(id)
+JOIN <table> ON ___
+LEFT JOIN <table> ON ___
+RIGHT JOIN <table> ON ___
+CROSS JOIN
+
+ALTER TABLE <имя таблицы>
+<операция>;
+
+con.close()
+
+from django.db import models
+
+class VideoProduct(models.Model):
+    title = models.CharField(max_length=128)
+
+original_title = models.OneToOneField(OriginalTitle, on_delete=models.CASCADE)
+on_delete=models.(SET_DEFAULT, PROTECT, RESTRICT, DO_NOTHING, CASCADE)
+models.ForeignKey - для 1:M
+ManyToManyField - для N:M
+through - ПРОМЕЖУТОЧНАЯ МОДЕЛЬ N:M
+related_name(___) - показывает всё связанное
+python manage.py makemigrations 
+python manage.py sqlmigrate ice_cream 0001 
+python manage.py migrate
+python manage.py shell
+Category.objects.create
+
+PYTHON CRUD МЕТОДЫ
+.create()
+.all()
+.filter()
+.get()
+.save()
+.update()
+
+ФИКСТУРЫ
+python manage.py dumpdata -o db.json  
+python manage.py dumpdata ice_cream.icecream -o ice_cream_icecream.json
+-o — это параметр команды, который указывает, что данные будут сохранены в указанный файл.
+python manage.py dumpdata --indent 2 -o indented_db.json - чтобы понятно было
+python -Xutf8 manage.py dumpdata --indent 2 -o indented_db.json - чтобы выводило кириллицу
+python manage.py dumpdata --exclude contenttypes -o db.json - чтобы не было ошибок на другом компе
+--exclude auth.permission - если ещё проблемы

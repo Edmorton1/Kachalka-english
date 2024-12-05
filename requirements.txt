@@ -1,0 +1,6 @@
+asgiref
+Django
+django-debug-toolbar
+pytz
+sqlparse
+tzdata

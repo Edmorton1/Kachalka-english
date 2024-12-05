@@ -1,0 +1,44 @@
+Команды Django
+python manage.py migrate
+python manage.py runserver
+.. - прошлая дирректория
+python -m pip install --upgrade pip
+pip install Django==3.2.16
+django-admin startproject <название>
+python manage.py startapp <название>
+TEMPLATES_DIR = BASE_DIR / 'templates'
+УКАЗЫВАТЬ apps В INSTALLED_APPS пример: blog.apps.BlogConfig
+        'DIRS': [TEMPLATES_DIR],
+
+Должно быть в settings
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+context не принимает списки: dict_name:dict
+
+request.resolver_match.view_name - название страницы
+
+если в ссылке число: href="{% url 'blog:post_detail' post.id %}
+
+Команды venv
+pip install -r requirements.txt
+python -m venv venv
+source venv/Scripts/activate
+deactivate
+
+Команды Git
+git init
+git status
+git add .
+git commit -m "first commit"
+git branch -M main
+git remote add origin <ссылка>
+git push -u origin main
+
+Если Django не видит HTML тэги
+"emmet.includeLanguages": { "django-html": "html", },

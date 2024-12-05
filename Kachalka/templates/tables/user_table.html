@@ -1,0 +1,184 @@
+{% load static %}
+
+    <div class="table-responsive">
+        <table class="table border">
+            <thead>
+                <tr><th class="text-center" colspan="2">User tabs</th></tr>
+            </thead>
+            <tbody>
+                {% if user.is_authenticated %}
+                    {% if '/records_edit/' not in request.path and 'statis_edit' not in request.path %}
+                        {% for user in user_values %}
+                        <tr>
+                            {% if user.title != None and user.link != None and user.pk|stringformat:"s" not in request.path %}
+                                <td colspan="2">
+                                    <div class="d-flex justify-content-between">
+                                        <a style="text-decoration: none; color: black;" target="_blank" href="{{ user.link }}">{{ user.title }}</a>
+                                        <a class="btn btn-outline-primary" href="{% url "homepage:userhref_add" user.pk %}">Edit</a>
+                                    </div></td>
+                            {% elif user.pk|stringformat:"s" in request.path and user.pk == user.pk and 'userhref_add' in request.path %}
+                                <form method="POST">
+                                {% csrf_token %}
+                                    {% if user.title == None or user.link == None %}
+                                        <td><input name="title" type="text" class="form-control" placeholder="Name..."></td>
+                                        <td><input name="link" type="text" class="form-control" placeholder="Tab..."></td>
+                                        <button type="submit" hidden></button>
+                                    {% else %}
+                                        <td><input name="title" type="text" class="form-control" placeholder="Name..." value="{{ user.title }}"></td>
+                                        <td><input name="link" type="text" class="form-control" placeholder="Tab..." value={{ user.link }}></td>
+                                        <button type="submit" hidden></button>                 
+                                    {% endif %}
+                                </form>
+                            {% else %}
+                                <td colspan="2"><a style="text-decoration: none;" href="{% url "homepage:userhref_add" user.pk %}" class="form-control">ㅤ</a></td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    
+                    {% else %}
+                        {% for user in user_values %}
+                        <tr>
+                            {% if user.title != None and user.link != None %}
+                                <td colspan="2">
+                                    <div class="d-flex justify-content-between">
+                                        <a style="text-decoration: none; color: black;" target="_blank" href="{{ user.link }}">{{ user.title }}</a>
+                                        <a class="btn btn-outline-primary" href="{% url "homepage:userhref_add" user.pk %}">Edit</a>
+                                    </div></td>
+                            {% elif user.pk|stringformat:"s" in request.path and user.pk == user.pk and 'userhref_add' in request.path %}
+                                <form method="POST">
+                                {% csrf_token %}
+                                    {% if user.title == None or user.link == None %}
+                                        <td><input name="title" type="text" class="form-control" placeholder="Имя..."></td>
+                                        <td><input name="link" type="text" class="form-control" placeholder="Ссылка..."></td>
+                                        <button type="submit" hidden></button>
+                                    {% else %}
+                                        <td><input name="title" type="text" class="form-control" placeholder="Имя..." value={{ user.title.title }}></td>
+                                        <td><input name="link" type="text" class="form-control" placeholder="Ссылка..." value={{ user.title.link }}></td>
+                                        <button type="submit" hidden></button>                 
+                                    {% endif %}
+                                </form>
+                            {% else %}
+                                <td colspan="2"><a style="text-decoration: none;" href="{% url "homepage:userhref_add" user.pk %}" class="form-control">ㅤ</a></td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    {% endif %}
+                {% else %}
+                {% for user in user_values %}
+                <tr>
+                    <td colspan="2"><a style="text-decoration: none;" href="" class="form-control">ㅤ</a></td>                 
+                </tr>
+                {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--  <div>
+    <div
+        class="table-responsive"
+    >
+        <table
+            class="table border"
+        >
+            <thead>
+                <tr>
+                    <th class="text-center" colspan="3">Пользовательские ссылки</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in user_values.empty %}
+
+                {% if user.title != None and user.link != None %}
+                <tr>
+                    <td scope="row" colspan="2">
+                    <div class="">
+                        <a class="form-control" href="user.link" style="text-decoration: none;">{{ user.title }}</a>
+                    </div>
+                    </td>
+                {% else %}
+                {% if '/userhref_add/' in request.path and user.pk == form.instance.pk %}
+                <form method="POST">
+                {% csrf_token %}
+                <tr>
+                    <td scope="row" colspan="2">
+                    <div class="">
+                        <input class="form-control" href="user.link" style="text-decoration: none;">
+                    </div>
+                    </td>
+                    <td>
+                        <div class="">
+                            <input class="form-control" href="user.link" style="text-decoration: none;">
+                        </div>
+                    </td>
+                    <td>
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                        >
+                            Submit
+                        </button>
+                        
+                    </td>
+                </tr>
+                </form>
+                {% endif %}
+                    <form method="POST">
+                    {% csrf_token %}
+                    <td scope="row" colspan="2">
+                        <div class="">
+                            <a class="form-control" href="{% url "homepage:userhref_add" user.pk%}" style="text-decoration: none;">ㅤ</a>
+                        </div>
+                    </td>
+                    </form>
+                    {% endif %}
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+</div> -->
+
+<!--                    <td scope="row">
+                        <div class="">
+                            <input type="text" placeholder="Имя" class="form-control" name="title"/>
+                        </div>
+                    </td>
+                    <td scope="row">
+                        <div class="">
+                            <input type="text" placeholder="Ссылка" class="form-control" name="link"/>
+                        </div>
+                    </td> -->

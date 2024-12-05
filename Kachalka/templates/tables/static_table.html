@@ -1,0 +1,135 @@
+{% load static %}
+<head>
+    <link rel="stylesheet" href="{% static "css/static_table.css" %}">
+</head>
+
+<div class="static-table" style="
+height: 100%;">
+
+    <div class="buttons">
+        {% if 'statis_add' not in request.path and 'statis_edit' not in request.path and user.is_authenticated %}
+        <a href="{% url "homepage:sadd" %}" type="button" class="btn btn-primary tree-button">ADD/EDIT/DELETE</a>
+        {% else %}
+        <a href="{% url "homepage:sadd" %}" type="button" class="btn btn-primary tree-button disabled">ADD/EDIT/DELETE</a>
+        {% endif %}
+    </div>
+<table class="table table-bordered">
+    <thead>
+      <tr>
+        <td class="text-center" colspan="5"><h6>
+          {% if best_result.2.hour == 0  %}
+          Your best score has been set {{ best_result.0 }} - {{ best_result.1 }} calories for {{ best_result.2.minute }} minutes, it was {{ best_result.3 }} days ago
+          {% else %}
+          Your best score has been set {{ best_result.0 }} - {{ best_result.1 }} calories for {{ best_result.2.hour }} hour {{ best_result.2.minute }} minutes, it was {{ best_result.3 }} days ago
+          {% endif %}
+        </h6></td>
+      </tr>
+      <tr>
+        <td class="text-center" colspan="5"><h6>
+          <div class="row" style="
+          width: 100%;
+          ">
+            <div class="col">Total workouts: {{ count.date__count }}</div>
+            <div class="col">Average result: {{ average_calories }}</div>
+            <div class="col">Average time: 
+              {% if average_time.0 != 0 %}
+              {{ average_time.0 }} hours {{ average_time.1 }} minutes
+              {% else %}
+              {{ average_time.1 }} minutes
+              {% endif %}</div>
+          </div></h6></td>
+      </tr>
+        <tr>
+          <th scope="col" colspan="1">Date</th>
+          <th scope="col" colspan="1">Calories</th>
+          <th scope="col" colspan="1">Time</th>
+          <th scope="col" colspan="1">Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if '/statis_add/' in request.path or 'statis_edit' in request.path %}
+        <form method="POST">
+        {% csrf_token %}
+          <tr>
+            <th>
+              {% if form.instance.date != None %}
+              <input type="date" name="date" class="form-control" value="{{ form.instance.date|date:"Y-m-d" }}">
+              {% else %}
+              <input type="date" name="date" class="form-control" id="dateField">
+              <script>
+                const dateField = document.getElementById('dateField');
+                const today = new Date();
+                dateField.value = today.toISOString().split('T')[0];
+            </script>
+              {% endif %}
+            </th>
+            <th><input type="number" name="calories" class="form-control" value="{{ form.instance.calories }}"></th>
+            {% if 'statis_edit' not in request.path %}
+            <th><input type="time" name="time" class="form-control" value="00:00"></th>
+            {% else %}
+            <th><input type="time" name="time" class="form-control" value="0{{ form.instance.time }}"></th>
+            {% endif %}
+            <th>
+              <select type="type" id="trainingType" name="type" class="form-control" required>
+                <option value="" disabled selected>Select a workout...</option>
+                {% for training_type in types %}
+                    <option value="{{ training_type.id }}" {% if form.instance.type and form.instance.type.id == training_type.id %}selected{% endif %}>
+                        {{ training_type.name }}
+                    </option>
+                {% endfor %}
+              </select>
+            <th class="text-center align-middle">
+              <button type="submit" class="btn btn-primary">Save</button> </th>
+            </th>
+          </tr>
+        </form>
+        {% endif %}
+        {% for part in statis %}
+        {% if part.pk != form.instance.pk and 'statis_edit' in request.path %}
+        <tr>
+          <td scope="row">{{ part.date }}</td>
+          <td>{{ part.calories }}</td>
+          {% if part.time.hour == 0 %}
+          <td>{{ part.time.minute }} minutes</td>
+          {% else %}
+          <td>{{ part.time.hour }} hour {{ part.time.minute }} minutes</td>
+          {% endif %}
+          <td>{{ part.type__name }}
+            {% if '/statis_add/' in request.path or 'statis_edit' in request.path %}
+            <td class="text-center align-middle" style="
+            width: 11vw;">
+              <form method="POST">
+                {% csrf_token %}
+                  <a href="{% url 'homepage:sedit' part.pk %}" class="btn btn-warning">Change</a>
+                  <a href="{% url 'homepage:sdelete' part.pk %}" class="btn btn-danger">Delete</a>
+                </form>
+            </td>
+            {% endif %}
+          {% elif 'statis_edit' not in request.path %}
+          <tr>
+            <td scope="row">{{ part.date }}</td>
+            <td>{{ part.calories }}</td>
+            {% if part.time.hour == 0 %}
+            <td>{{ part.time.minute }} minutes</td>
+            {% else %}
+            <td>{{ part.time.hour }} hour {{ part.time.minute }} minutes</td>
+            {% endif %}
+            <td>{{ part.type__name }}
+              {% if '/statis_add/' in request.path or 'statis_edit' in request.path %}
+              <td class="text-center align-middle" style="
+              width: 11vw;">
+                <form method="POST">
+                  {% csrf_token %}
+                    <a href="{% url 'homepage:sedit' part.pk %}" class="btn btn-warning">Change</a>
+                    <a href="{% url 'homepage:sdelete' part.pk %}" class="btn btn-danger">Delete</a>
+                  </form>
+              </td>
+              {% endif %}
+
+          {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>

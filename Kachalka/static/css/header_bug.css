@@ -1,0 +1,7 @@
+.user-color_bug {
+    background: rgb(0,0,0);
+    background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(13,110,253,1) 30%);
+    color: white;
+    font-size: 35px;
+    font-family: Tahoma;
+}
